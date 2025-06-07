@@ -1,62 +1,78 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-  />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Mini App</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    .mobile-body {
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .mobile-wrap {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background: red;
+    }
+
+    .mobile-content {
+      height: calc(100% + 1px);
+      background: green;
+      padding: 16px;
+      color: white;
+      font-family: sans-serif;
+    }
+
+    button {
+      display: block;
+      margin: 12px 0;
+      padding: 10px 14px;
+      font-size: 16px;
+    }
+  </style>
 </head>
-<body class="">
+<body>
   <div id="wrap">
     <div id="content">
-      <nav class="navbar">
-        <a href="#about">Обо мне</a>
-        <a href="#examples">Примеры</a>
-        <a href="#pricing">Прайс</a>
-      </nav>
-
-      <section id="about" class="section">
-        <h1>Привет! Я дизайнер.</h1>
-        <p>Создаю лендинги, Telegram WebApp и многое другое.</p>
-        <button onclick="scrollToPricing()">Смотреть цены</button>
-      </section>
-
-      <section id="examples" class="section">
-        <h2>Примеры работ</h2>
-        <video controls src="assets/video1.mp4" width="100%"></video>
-        <video controls src="assets/video2.mp4" width="100%"></video>
-      </section>
-
-      <section id="pricing" class="section">
-        <h2>Прайс</h2>
-        <ul>
-          <li>Лендинг — от 5 000 ₽</li>
-          <li>Telegram Mini App — от 10 000 ₽</li>
-        </ul>
-      </section>
+      <h1>Telegram Mini App</h1>
+      <p>This is a simple example with Telegram methods.</p>
+      <button onclick="showBackButton()">Show Back Button</button>
+      <button onclick="setHeaderColor()">Set Header Color</button>
     </div>
   </div>
 
-  <!-- Telegram SDK -->
   <script src="https://unpkg.com/@telegram-apps/sdk@1.0.0/dist/index.iife.js"></script>
   <script>
     (function () {
-      var { retrieveLaunchParams, postEvent } = window.telegramApps.sdk;
-      var lp = retrieveLaunchParams();
+      const { retrieveLaunchParams, postEvent } = window.telegramApps.sdk;
+      const lp = retrieveLaunchParams();
 
-      if (['macos', 'tdesktop', 'weba', 'web', 'webk'].includes(lp.platform)) return;
-
-      postEvent('web_app_expand');
-      document.body.classList.add('mobile-body');
-      document.getElementById('wrap').classList.add('mobile-wrap');
-      document.getElementById('content').classList.add('mobile-content');
+      if (!['macos', 'tdesktop', 'weba', 'web', 'webk'].includes(lp.platform)) {
+        postEvent('web_app_expand');
+        document.body.classList.add('mobile-body');
+        document.getElementById('wrap').classList.add('mobile-wrap');
+        document.getElementById('content').classList.add('mobile-content');
+      }
     })();
-  </script>
 
-  <script src="script.js"></script>
+    function postTelegramEvent(eventType, eventData = {}) {
+      const message = JSON.stringify({ eventType, eventData });
+      window.parent.postMessage(message, 'https://web.telegram.org');
+    }
+
+    function showBackButton() {
+      postTelegramEvent('web_app_setup_back_button', { is_visible: true });
+    }
+
+    function setHeaderColor() {
+      postTelegramEvent('web_app_set_header_color', { color_key: 'bg_color' });
+    }
+  </script>
 </body>
 </html>
