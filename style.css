@@ -1,48 +1,20 @@
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background-color: #efefef;
-  color: #222;
-  scroll-behavior: smooth;
+/* Telegram mobile view overrides */
+.mobile-body {
+  overflow: hidden;
+  height: 100vh;
 }
 
-.navbar {
-  position: sticky;
+.mobile-wrap {
+  position: absolute;
+  left: 0;
   top: 0;
-  background: white;
-  padding: 10px 20px;
-  display: flex;
-  gap: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  right: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #efefef;
 }
 
-.navbar a {
-  text-decoration: none;
-  color: #222;
-  transition: background 0.3s;
-  padding: 5px 10px;
-  border-radius: 8px;
-}
-
-.navbar a:hover {
-  background-color: #cceeff;
-}
-
-.section {
-  padding: 60px 20px;
-  max-width: 800px;
-  margin: auto;
-}
-
-button {
-  background: white;
-  border: 1px solid #ccc;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background-color: #cceeff;
+.mobile-content {
+  height: calc(100% + 1px);
 }
