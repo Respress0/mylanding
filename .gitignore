@@ -1,0 +1,19 @@
+# Node.js (если используешь Vercel CLI или npm скрипты)
+node_modules/
+.vercel/
+
+# macOS системные файлы
+.DS_Store
+
+# Логи и временные файлы
+*.log
+*.tmp
+*.swp
+
+# IDE
+.vscode/
+.idea/
+
+# Сборочные артефакты (на случай использования сборщика позже)
+dist/
+build/
