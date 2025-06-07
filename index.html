@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Обо мне</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="#about">Обо мне</a>
+    <a href="#examples">Примеры</a>
+    <a href="#pricing">Прайс</a>
+  </nav>
+
+  <section id="about" class="section">
+    <h1>Привет! Я дизайнер.</h1>
+    <p>Создаю лендинги, Telegram WebApp и многое другое.</p>
+    <button onclick="scrollToPricing()">Смотреть цены</button>
+  </section>
+
+  <section id="examples" class="section">
+    <h2>Примеры работ</h2>
+    <video controls src="assets/video1.mp4" width="100%"></video>
+    <video controls src="assets/video2.mp4" width="100%"></video>
+  </section>
+
+  <section id="pricing" class="section">
+    <h2>Прайс</h2>
+    <ul>
+      <li>Лендинг — от 5 000 ₽</li>
+      <li>Telegram Mini App — от 10 000 ₽</li>
+    </ul>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
