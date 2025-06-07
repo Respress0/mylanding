@@ -23,6 +23,8 @@
         <h1>Привет! Я дизайнер.</h1>
         <p>Создаю лендинги, Telegram WebApp и многое другое.</p>
         <button onclick="scrollToPricing()">Смотреть цены</button>
+        <button onclick="requestLocation()">📍 Поделиться геолокацией</button>
+
       </section>
 
       <section id="examples" class="section">
@@ -36,7 +38,6 @@
         <ul>
           <li>Лендинг — от 5 000 ₽</li>
           <li>Telegram Mini App — от 10 000 ₽</li>
-          <button onclick="tgPostEvent('web_app_expand')">Расширить окно</button>
         </ul>
       </section>
     </div>
@@ -60,55 +61,28 @@
 
   <script src="script.js"></script>
   <script>
-  function postTelegramEvent(eventType, eventData = {}) {
-    const message = JSON.stringify({ eventType, eventData });
-    window.parent.postMessage(message, 'https://web.telegram.org');
-  }
-
-  // Пример: показать кнопку "Назад"
-  function showBackButton() {
-    postTelegramEvent('web_app_setup_back_button', { is_visible: true });
-  }
-
-  // Пример: изменить цвет хедера
-  function setHeaderColor() {
-    postTelegramEvent('web_app_set_header_color', { color_key: 'bg_color' });
-  }
-
-  // Автоматически уведомить Telegram, что страница готова
-  postTelegramEvent('web_app_ready');
-</script>
-<script>
   function tgPostEvent(eventType, eventData = {}) {
     const message = JSON.stringify({ eventType, eventData });
 
-    // Web Telegram
     if (window.parent) {
       window.parent.postMessage(message, 'https://web.telegram.org');
     }
 
-    // Mobile/Desktop Telegram
     if (window.TelegramWebviewProxy && typeof TelegramWebviewProxy.postEvent === 'function') {
-      TelegramWebviewProxy.postEvent(eventType, JSON.stringify(eventData));
+      window.TelegramWebviewProxy.postEvent(eventType, JSON.stringify(eventData));
     }
 
-    // Windows Phone
     if (window.external && typeof window.external.notify === 'function') {
       window.external.notify(message);
     }
   }
 
-  // Пример: показать кнопку "Назад"
-  function showBackButton() {
-    tgPostEvent('web_app_setup_back_button', { is_visible: true });
+  // Запросить доступ к геолокации
+  function requestLocation() {
+    tgPostEvent('web_app_request_location');
   }
 
-  // Пример: изменить цвет хедера
-  function setHeaderColor() {
-    tgPostEvent('web_app_set_header_color', { color_key: 'bg_color' });
-  }
-
-  // Пример: сообщить Telegram, что лендинг готов
+  // Уведомить Telegram, что всё готово
   tgPostEvent('web_app_ready');
 </script>
 
