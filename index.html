@@ -36,6 +36,7 @@
         <ul>
           <li>Лендинг — от 5 000 ₽</li>
           <li>Telegram Mini App — от 10 000 ₽</li>
+          <button onclick="tgPostEvent('web_app_expand')">Расширить окно</button>
         </ul>
       </section>
     </div>
@@ -76,6 +77,39 @@
 
   // Автоматически уведомить Telegram, что страница готова
   postTelegramEvent('web_app_ready');
+</script>
+<script>
+  function tgPostEvent(eventType, eventData = {}) {
+    const message = JSON.stringify({ eventType, eventData });
+
+    // Web Telegram
+    if (window.parent) {
+      window.parent.postMessage(message, 'https://web.telegram.org');
+    }
+
+    // Mobile/Desktop Telegram
+    if (window.TelegramWebviewProxy && typeof TelegramWebviewProxy.postEvent === 'function') {
+      TelegramWebviewProxy.postEvent(eventType, JSON.stringify(eventData));
+    }
+
+    // Windows Phone
+    if (window.external && typeof window.external.notify === 'function') {
+      window.external.notify(message);
+    }
+  }
+
+  // Пример: показать кнопку "Назад"
+  function showBackButton() {
+    tgPostEvent('web_app_setup_back_button', { is_visible: true });
+  }
+
+  // Пример: изменить цвет хедера
+  function setHeaderColor() {
+    tgPostEvent('web_app_set_header_color', { color_key: 'bg_color' });
+  }
+
+  // Пример: сообщить Telegram, что лендинг готов
+  tgPostEvent('web_app_ready');
 </script>
 
 </body>
