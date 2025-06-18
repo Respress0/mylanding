@@ -3,6 +3,8 @@ from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, fil
 from fastapi import FastAPI, Request
 import asyncio
 import uvicorn
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 
 BOT_TOKEN = '7536316813:AAEIdU7-lJvaYrHxHgrk8AeURy1_Ppt3J-g'
 CHAT_ID = 678901234  # <-- ЗАМЕНИ на свой chat_id, когда узнаешь
@@ -57,6 +59,11 @@ async def start_bot():
 
 # --- Запуск и FastAPI, и Telegram одновременно ---
 
-@app.on_event("startup")
-async def on_startup():
+
+# --- Lifespan: инициализация при старте приложения ---
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     asyncio.create_task(start_bot())
+    yield  # здесь FastAPI "ждёт", пока приложение работает
+
+app = FastAPI(lifespan=lifespan)
